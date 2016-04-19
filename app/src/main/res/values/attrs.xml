@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AbsBouncySurfaceView" >
+        <attr name="background_color" format="color"/>
+        <attr name="alpha" format="integer"/>
+        <attr name="edge_side_direction" format="integer">
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="left" value="3"/>
+            <enum name="bottom" value="4" />
+        </attr>
+        <attr name="max_height" format="dimension" />
+    </declare-styleable>
+<declare-styleable name="AbsScrollerHandle">
+    <attr name="scroller_handle_layout" format="reference"/>
+</declare-styleable>
+    <declare-styleable name="ScrollerHandleImpl">
+        <attr name="hint_color" format="color"/>
+        <attr name="text_color" format="color" />
+    </declare-styleable>
+</resources>
