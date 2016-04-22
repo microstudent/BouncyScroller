@@ -8,11 +8,14 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.microstudent.app.bouncyfastscroller.bouncyhandle.helper.BouncyHelper;
 import com.microstudent.app.bouncyfastscroller.bouncyhandle.helper.Callback;
 import com.microstudent.app.bouncyfastscroller.bouncyhandle.helper.DrawContent;
 import com.microstudent.app.bouncyfastscroller.bouncyhandle.helper.IndicatorHelper;
+import com.microstudent.app.bouncyfastscroller.calculation.VerticalScreenPositionCalculator;
+import com.microstudent.app.bouncyfastscroller.calculation.VerticalScrollBoundsProvider;
 
 /**
  * Created by MicroStudent on 2016/4/14.
@@ -37,6 +40,8 @@ public class BouncyHandleImpl extends View implements BouncyHandle, Callback {
     private BouncyHelper mBouncyHelper;
 
     private DrawContent mDrawContent;
+
+    private boolean mIsIndicatorVisiable = true;
 
     public BouncyHandleImpl(Context context) {
         this(context, null);
@@ -107,23 +112,36 @@ public class BouncyHandleImpl extends View implements BouncyHandle, Callback {
     }
 
     @Override
-    public void showIndicator() {
+    public void showHandle() {
         if (mIndicatorHelper != null) {
             setHintWord("你他妈给我运行起来");
 
-            mIndicatorHelper.startAnimation();
-            mBouncyHelper.startAnimation();
+            if (mIsIndicatorVisiable) {
+                mIndicatorHelper.startAnimation();
+                mBouncyHelper.startAnimation();
+            } else {
+                mBouncyHelper.startAnimation();
+            }
             Log.d(TAG, "start anim");
         }
     }
 
 
     @Override
-    public void hideIndicator() {
+    public void hideHandle() {
         if (mIndicatorHelper != null) {
-            mIndicatorHelper.reverseAnimation();
-            mBouncyHelper.reverseAnimation();
+            if (mIsIndicatorVisiable) {
+                mIndicatorHelper.reverseAnimation();
+                mBouncyHelper.reverseAnimation();
+            } else {
+                mBouncyHelper.reverseAnimation();
+            }
         }
+    }
+
+    @Override
+    public void setIndicatorVisibility(int visibility) {
+        mIsIndicatorVisiable = visibility == VISIBLE;
     }
 
     @Override
@@ -150,6 +168,7 @@ public class BouncyHandleImpl extends View implements BouncyHandle, Callback {
     public void onAnimUpdate(Animator animation) {
         if (mBouncyHelper != null && animation == mBouncyHelper.getMidPointAnimator()) {
             if (mDrawContent != null) {
+                mDrawContent.reset();
                 mDrawContent.addPath(mBouncyHelper.getPath());
             }
         } else {

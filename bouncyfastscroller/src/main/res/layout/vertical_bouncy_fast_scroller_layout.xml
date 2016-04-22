@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    >
+
+    <com.microstudent.app.bouncyfastscroller.indexbar.VerticalIndexBar
+        android:id="@+id/scroll_bar"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
+        />
+
+    <com.microstudent.app.bouncyfastscroller.bouncyhandle.BouncyHandleImpl
+        android:id="@+id/scroll_handle"
+        android:layout_width="140dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_vertical"
+        />
+</FrameLayout>

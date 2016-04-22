@@ -43,8 +43,6 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
 
     private TextPaint mTextPaint;
 
-    private OnIndexTouchListener mListener;
-
     public VerticalIndexBar(Context context) {
         this(context, null);
     }
@@ -57,6 +55,7 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         super(context, attrs, defStyleAttr);
 
         TypedArray array = context.obtainStyledAttributes(R.styleable.VerticalIndexBar);
+
         Drawable bg = null;
 
         try {
@@ -81,8 +80,8 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         mTextPaint.setColor(Color.DKGRAY);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
 
-//        setFocusable(true);
-//        setFocusableInTouchMode(true);
+        setFocusable(true);
+        setFocusableInTouchMode(true);
     }
 
     private void initView() {
@@ -107,23 +106,6 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                Log.d(TAG, "receive down");
-
-                break;
-            case MotionEvent.ACTION_MOVE:
-                Log.d(TAG, "receive move");
-                break;
-            case MotionEvent.ACTION_UP:
-                Log.d(TAG, "receive up");
-                break;
-        }
-        return true;
-    }
-
-    @Override
     public void showIndexBar() {
         animate().alpha(1f).start();
         Log.d(TAG, "alpha in");
@@ -133,10 +115,5 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
     public void hideIndexBar() {
         animate().alpha(0).start();
         Log.d(TAG, "alpha out");
-    }
-
-    @Override
-    public void setOnIndexTouchListener(OnIndexTouchListener listener) {
-        mListener = listener;
     }
 }
