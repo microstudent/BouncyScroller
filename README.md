@@ -4,7 +4,7 @@
 ----------
 
 
-This is a FastScroller which is similar to Samsung's **TouchWiz 6.0**'s FastScroller. However, because of my lack of coding, in some ways, it has a little bug for now.
+This is a FastScroller for RecyclerView which is similar to Samsung's **TouchWiz 6.0**'s FastScroller. However, because of my lack of coding, in some ways, it has a little bug for now.
 
 This project reference to [danoz73/RecyclerViewFastScroller][1] In some parts, with some bug fixed, and new feature added.
 
