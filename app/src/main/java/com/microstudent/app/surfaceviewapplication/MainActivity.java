@@ -24,13 +24,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
-        recyclerView.setAdapter(new MyAdapter(this));
+        MyAdapter adapter = new MyAdapter(this);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
 
         verticalBouncyFastScroller = (VerticalBouncyFastScroller) findViewById(R.id.vbfs);
         assert verticalBouncyFastScroller != null;
-        verticalBouncyFastScroller.setRecyclerView(recyclerView, RecyclerViewScroller.SCROLLER_TYPE.ALWAYS_SHOW_INDEX);
+        verticalBouncyFastScroller.setRecyclerView(recyclerView, RecyclerViewScroller.ALWAYS_SHOW_INDEX);
+        verticalBouncyFastScroller.setData(adapter.getData());
         recyclerView.addOnScrollListener(verticalBouncyFastScroller.getOnScrollListener());
-
     }
 }

@@ -14,6 +14,7 @@
 
     <com.microstudent.app.bouncyfastscroller.vertical.VerticalBouncyFastScroller
         android:id="@+id/vbfs"
+        app:behavior="simple"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

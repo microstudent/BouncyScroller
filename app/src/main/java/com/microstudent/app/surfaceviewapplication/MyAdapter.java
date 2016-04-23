@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  *
  * Created by MicroStudent on 2016/4/21.
@@ -14,8 +16,30 @@ import android.widget.TextView;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private LayoutInflater mInflater;
 
+    private ArrayList<String> mData;
+
+    public static final String alphas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     public MyAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
+        mData = new ArrayList<>();
+        initData();
+    }
+
+    private void initData() {
+        mData.add("000");
+        mData.add("123");
+        mData.add("456");
+        mData.add("♂");
+        for(char c:alphas.toCharArray()){
+            for(int i=0; i<10; i++){
+                mData.add(c + String.valueOf(i));
+            }
+        }
+    }
+
+    public ArrayList<String> getData() {
+        return mData;
     }
 
     @Override
@@ -26,12 +50,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.textView.setText(String.valueOf(position));
+        holder.textView.setText(mData.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 100;
+        return mData.size();
     }
 
 

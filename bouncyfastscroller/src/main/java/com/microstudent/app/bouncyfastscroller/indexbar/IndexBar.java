@@ -9,9 +9,11 @@ import android.view.View;
  */
 public interface IndexBar {
 
-    public void showIndexBar();
+    void showIndexBar();
 
-    public void hideIndexBar();
+    void hideIndexBar();
 
-    public void setOnTouchListener(View.OnTouchListener listener);
+    void setVisitable(boolean visitable);
+
+    void setOnTouchListener(View.OnTouchListener listener);
 }

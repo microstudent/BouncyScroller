@@ -13,6 +13,16 @@
         android:layout_gravity="center|right"
         />
 
+    <View
+        android:id="@+id/progress_indicator"
+        android:layout_gravity="center|right"
+        android:layout_margin="10dp"
+        android:background="@android:color/darker_gray"
+        android:layout_width="10dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        />
+
     <com.microstudent.app.bouncyfastscroller.bouncyhandle.BouncyHandleImpl
         android:id="@+id/scroll_handle"
         android:layout_width="140dp"

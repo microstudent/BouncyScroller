@@ -3,4 +3,11 @@
     <declare-styleable name="VerticalIndexBar">
         <attr name="bg" format="reference" />
     </declare-styleable>
+    <declare-styleable name="VerticalBouncyFastScroller">
+        <attr name="behavior" format="enum">
+            <enum name="simple" value="0" />
+            <enum name="show_index_in_need" value="1" />
+            <enum name="always_show_index"  value="2"/>
+        </attr>
+    </declare-styleable>
 </resources>

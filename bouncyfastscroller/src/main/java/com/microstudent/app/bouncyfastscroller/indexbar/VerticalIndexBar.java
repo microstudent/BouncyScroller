@@ -56,7 +56,7 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
 
         TypedArray array = context.obtainStyledAttributes(R.styleable.VerticalIndexBar);
 
-        Drawable bg = null;
+        Drawable bg;
 
         try {
             bg = array.getDrawable(R.styleable.VerticalIndexBar_bg);
@@ -116,4 +116,17 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         animate().alpha(0).start();
         Log.d(TAG, "alpha out");
     }
+
+    @Override
+    public void setVisitable(boolean visibility) {
+        if (visibility) {
+            setImageAlpha(255);
+            mTextPaint.setAlpha(255);
+        } else {
+            setImageAlpha(0);
+            mTextPaint.setAlpha(0);
+        }
+        invalidate();
+    }
+
 }
