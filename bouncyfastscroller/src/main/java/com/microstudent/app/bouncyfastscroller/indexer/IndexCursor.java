@@ -8,6 +8,10 @@ import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.microstudent.app.bouncyfastscroller.utils.CharacterUtils;
+
+import net.sourceforge.pinyin4j.PinyinHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -46,6 +50,13 @@ public class IndexCursor implements Cursor {
 
     @Override
     public String getString(int columnIndex) {
+        //if first character is Chinese.
+        if (CharacterUtils.isChinese(mData.get(mPosition).charAt(0))) {
+            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(mData.get(mPosition).charAt(0));
+            if (pinyinArray != null) {
+                return pinyinArray[0].substring(0, 1);
+            }
+        }
         return mData.get(mPosition).substring(0, 1);
     }
 

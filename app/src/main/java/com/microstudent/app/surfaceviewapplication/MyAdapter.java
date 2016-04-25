@@ -18,7 +18,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private ArrayList<String> mData;
 
-    public static final String alphas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String alphas = "爱ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public MyAdapter(Context context) {
         mInflater = LayoutInflater.from(context);

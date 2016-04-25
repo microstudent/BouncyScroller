@@ -108,6 +108,9 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
             } else {
                 mIndexBar.setVisitable(true);
             }
+            if (mRecyclerView != null) {
+                mRecyclerView.addOnScrollListener(getOnScrollListener());
+            }
         }
     }
 
@@ -128,8 +131,6 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         mBouncyHandle = (BouncyHandle) findViewById(R.id.scroll_handle);
         mThumb = findViewById(R.id.thumb);
     }
-
-    protected abstract void showOrHideProgressIndicator(RecyclerView mRecyclerView);
 
     public void setRecyclerView(RecyclerView recyclerView) {
         setRecyclerView(recyclerView, mBehavior);
@@ -159,7 +160,6 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         }
     }
 
-    //TODO 改变功能
     private int getPositionFromScrollProgress(float scrollProgress) {
         return (int) (mRecyclerView.getAdapter().getItemCount() * scrollProgress);
     }

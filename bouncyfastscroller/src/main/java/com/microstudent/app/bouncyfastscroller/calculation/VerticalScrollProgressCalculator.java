@@ -62,23 +62,4 @@ public class VerticalScrollProgressCalculator implements ScrollProgressCalculato
             return y / mScrollBoundsProvider.getMaximumScrollY();
         }
     }
-
-    public boolean shouldProgressIndicatorShown(RecyclerView recyclerView) {
-        if (recyclerView == null) {
-            return false;
-        }
-
-        View visibleChild = recyclerView.getChildAt(0);
-        if (visibleChild == null) {
-            return false;
-        }
-        RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(visibleChild);
-
-        int itemHeight = holder.itemView.getHeight();
-        int recyclerHeight = recyclerView.getHeight();
-
-        int size = recyclerView.getAdapter().getItemCount();
-
-        return size * itemHeight >= recyclerHeight;
-    }
 }

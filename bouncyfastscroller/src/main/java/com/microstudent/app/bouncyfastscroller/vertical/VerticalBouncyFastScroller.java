@@ -1,7 +1,6 @@
 package com.microstudent.app.bouncyfastscroller.vertical;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -37,20 +36,8 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
     }
 
     @Override
-    protected void showOrHideProgressIndicator(RecyclerView mRecyclerView) {
-        if (mScrollProgressCalculator.shouldProgressIndicatorShown(mRecyclerView)) {
-            mThumb.setVisibility(VISIBLE);
-        } else {
-            mThumb.setVisibility(INVISIBLE);
-        }
-    }
-
-    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (mBehavior == SIMPLE) {
-            showOrHideProgressIndicator(mRecyclerView);
-        }
     }
 
 
