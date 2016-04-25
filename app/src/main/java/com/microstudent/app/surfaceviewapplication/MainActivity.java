@@ -33,6 +33,5 @@ public class MainActivity extends AppCompatActivity {
         assert verticalBouncyFastScroller != null;
         verticalBouncyFastScroller.setRecyclerView(recyclerView);
         verticalBouncyFastScroller.setData(adapter.getData());
-        recyclerView.addOnScrollListener(verticalBouncyFastScroller.getOnScrollListener());
     }
 }

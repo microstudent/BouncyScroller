@@ -56,6 +56,8 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     protected boolean mIsTouching = false;
 
+    private float mAlpha = 1f;
+
     public AbsRecyclerViewScroller(Context context) {
         this(context, null);
     }
@@ -78,8 +80,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
             mBehavior =  array.getInt(R.styleable.AbsRecyclerViewScroller_behavior, SIMPLE);
             int color = array.getColor(R.styleable.AbsRecyclerViewScroller_theme_color, DEFAULT_COLOR);
             setThemeColor(color);
-            float alpha = array.getFloat(R.styleable.AbsRecyclerViewScroller_alpha2, DEFAULT_ALPHA);
-            setAlpha(alpha);
+            setAlpha(array.getFloat(R.styleable.AbsRecyclerViewScroller_alpha2, DEFAULT_ALPHA));
         }finally {
             array.recycle();
         }
@@ -94,6 +95,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     @Override
     public void setAlpha(float alpha) {
+        mAlpha = alpha;
         mThumb.setAlpha(alpha);
         mBouncyHandle.setAlpha(alpha);
         mIndexBar.setAlpha(alpha);
@@ -105,8 +107,10 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
             mIndexBar.setOnTouchListener(this);
             if (mBehavior == SIMPLE) {
                 mIndexBar.setVisitable(false);
+                mThumb.setVisibility(VISIBLE);
             } else {
                 mIndexBar.setVisitable(true);
+                mThumb.setVisibility(INVISIBLE);
             }
             if (mRecyclerView != null) {
                 mRecyclerView.addOnScrollListener(getOnScrollListener());
@@ -194,11 +198,23 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
                         scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
                         moveHandleToPosition(scrollProgress);
                     }
-                    if (mBehavior == SIMPLE) {
-                        if (mThumb.getAlpha() != 1) {
-                            mThumb.setAlpha(1);
-                        } else {
+                }
+
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        //The RecyclerView is not currently scrolling.
+                        if (mBehavior == SIMPLE) {
                             mThumb.animate().alpha(0).setStartDelay(DEFAULT_ALPHA_OUT_DELAY);
+                        } else if (mBehavior == SHOW_INDEX_IN_NEED) {
+                            mIndexBar.hideIndexBar(DEFAULT_ALPHA_OUT_DELAY);
+                        }
+                    } else {
+                        if (mBehavior == SIMPLE) {
+                            mThumb.setAlpha(mAlpha);
+                        } else if (mBehavior == SHOW_INDEX_IN_NEED) {
+                            mIndexBar.showIndexBar();
                         }
                     }
                 }
@@ -206,6 +222,8 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         }
         return mOnScrollListener;
     }
+
+
 
     protected abstract ScrollProgressCalculator getScrollProgressCalculator();
 
@@ -216,8 +234,11 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
         float scrollProgress = getScrollProgress(event);
 
-        if (mBehavior == ALWAYS_SHOW_INDEX) {
+        if (mBehavior == ALWAYS_SHOW_INDEX || mBehavior == SHOW_INDEX_IN_NEED) {
             showOrHideIndicator(event);
+            if (mIsTouching) {
+                mIndexBar.setVisitable(true);
+            }
             int section = getTouchingSection(event.getY());
             scrollTo(section, true);
         } else {
@@ -310,9 +331,6 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
                 return;
             case MotionEvent.ACTION_UP:
                 mBouncyHandle.hideHandle();
-//                if (mBehavior == SHOW_INDEX_IN_NEED) {
-//                    mIndexBar.hideIndexBar();
-//                }
         }
     }
 }

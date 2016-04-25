@@ -11,8 +11,6 @@ public interface IndexBar {
 
     void showIndexBar();
 
-    void hideIndexBar();
-
     void setVisitable(boolean visitable);
 
     void setOnTouchListener(View.OnTouchListener listener);
@@ -20,4 +18,6 @@ public interface IndexBar {
     int getSectionIndex(float y);
 
     void setAlpha(float alpha);
+
+    void hideIndexBar(long defaultAlphaOutDelay);
 }

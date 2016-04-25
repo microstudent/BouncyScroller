@@ -20,7 +20,6 @@
         android:background="@android:color/holo_green_light"
         android:layout_width="10dp"
         android:layout_height="50dp"
-        android:visibility="invisible"
         />
 
 

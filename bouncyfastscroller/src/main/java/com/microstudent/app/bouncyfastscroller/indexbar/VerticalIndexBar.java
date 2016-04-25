@@ -110,21 +110,15 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
 
     @Override
     public void showIndexBar() {
-        animate().alpha(1f).start();
+        animate().alpha(1f).setStartDelay(0).start();
         Log.d(TAG, "alpha in");
-    }
-
-    @Override
-    public void hideIndexBar() {
-        animate().alpha(0).start();
-        Log.d(TAG, "alpha out");
     }
 
 
     @Override
     public void setVisitable(boolean visibility) {
         if (visibility) {
-            setImageAlpha(255);
+            setAlpha(1f);
             mTextPaint.setAlpha(255);
         } else {
             setImageAlpha(0);
@@ -147,6 +141,16 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         } else {
             return result;
         }
+    }
+
+    @Override
+    public void hideIndexBar(long AlphaOutDelay) {
+        animate().alpha(0).setStartDelay(AlphaOutDelay).start();
+        Log.d(TAG, "alpha out");
+    }
+
+    public void hideIndexBar() {
+        hideIndexBar(0);
     }
 
 }
