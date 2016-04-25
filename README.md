@@ -12,5 +12,11 @@ This project reference to [danoz73/RecyclerViewFastScroller][1] In some parts, w
 
 still working, will be released soon~
 
+TODO List：
+1. SIMPLE 模式下拉到最底下会有一定的间隙，范围计算错误；
+2. 添加带INDICATOR的SIMPLE模式；
+3. SIMPLE考虑添加一个范围示意View；
+4. 添加注释，编写文档。
+
   [1]: https://github.com/danoz73/RecyclerViewFastScroller
   [2]: https://github.com/microstudent/microstudent.github.io/raw/master/b.gif
