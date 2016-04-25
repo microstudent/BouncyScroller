@@ -8,16 +8,18 @@ import android.view.View;
  */
 public interface BouncyHandle {
     //set the word that will be shown in the indicator. and only the first char will be chose.
-    public void setHintWord(String s);
+    void setHintWord(String s);
 
     //show  Indicator
-    public void showHandle();
+    void showHandle();
 
     //hide Indicator
-    public void hideHandle();
+    void hideHandle();
 
-    public void setIndicatorVisibility(int visibility);
+    void setIndicatorVisibility(int visibility);
 
     //set hint color.
-    public void setHintColor(int Color);
+    void setHintColor(int Color);
+
+    void setAlpha(float alpha);
 }

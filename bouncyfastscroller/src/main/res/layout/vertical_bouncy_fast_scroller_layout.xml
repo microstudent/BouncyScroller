@@ -6,22 +6,24 @@
     >
 
     <com.microstudent.app.bouncyfastscroller.indexbar.VerticalIndexBar
-        android:id="@+id/scroll_bar"
+        android:id="@+id/index_bar"
         android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|right"
+        android:layout_gravity="center_vertical|end"
         />
 
     <View
-        android:id="@+id/progress_indicator"
-        android:layout_gravity="center|right"
+        android:id="@+id/thumb"
+        android:layout_gravity="center_vertical|end"
         android:layout_margin="10dp"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/holo_green_light"
         android:layout_width="10dp"
         android:layout_height="50dp"
         android:visibility="invisible"
         />
+
+
 
     <com.microstudent.app.bouncyfastscroller.bouncyhandle.BouncyHandleImpl
         android:id="@+id/scroll_handle"

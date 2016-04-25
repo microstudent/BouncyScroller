@@ -18,4 +18,6 @@ public interface IndexBar {
     void setOnTouchListener(View.OnTouchListener listener);
 
     int getSectionIndex(float y);
+
+    void setAlpha(float alpha);
 }

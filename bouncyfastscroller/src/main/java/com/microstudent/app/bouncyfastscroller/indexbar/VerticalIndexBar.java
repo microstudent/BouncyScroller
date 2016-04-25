@@ -120,6 +120,7 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         Log.d(TAG, "alpha out");
     }
 
+
     @Override
     public void setVisitable(boolean visibility) {
         if (visibility) {

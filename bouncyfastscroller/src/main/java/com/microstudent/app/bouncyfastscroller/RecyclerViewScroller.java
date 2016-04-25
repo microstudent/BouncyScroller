@@ -14,7 +14,7 @@ public interface RecyclerViewScroller {
      * ALWAYS_SHOW_INDEX means that there will always be a indexBar shown.
      */
     int SIMPLE = 0;
-    int SHOW_INDEX_IN_NEED = 1;
+//    int SHOW_INDEX_IN_NEED = 1;
     int ALWAYS_SHOW_INDEX = 2;
 
     /**

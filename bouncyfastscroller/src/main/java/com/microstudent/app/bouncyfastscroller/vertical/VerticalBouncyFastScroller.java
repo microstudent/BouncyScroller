@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.microstudent.app.bouncyfastscroller.AbsRecyclerViewScroller;
@@ -40,9 +39,9 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
     @Override
     protected void showOrHideProgressIndicator(RecyclerView mRecyclerView) {
         if (mScrollProgressCalculator.shouldProgressIndicatorShown(mRecyclerView)) {
-            mProgressIndicator.setVisibility(VISIBLE);
+            mThumb.setVisibility(VISIBLE);
         } else {
-            mProgressIndicator.setVisibility(INVISIBLE);
+            mThumb.setVisibility(INVISIBLE);
         }
     }
 
@@ -57,11 +56,11 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
 
     @Override
     protected void onCreateScrollProgressCalculator() {
-        View bar = (View) mBar;
+        View bar = (View) mIndexBar;
         VerticalScrollBoundsProvider boundsProvider;
         if (mBehavior == SIMPLE) {
             boundsProvider =
-                    new VerticalScrollBoundsProvider(bar.getY(), bar.getHeight() - mProgressIndicator.getHeight());
+                    new VerticalScrollBoundsProvider(bar.getY(), bar.getHeight() - mThumb.getHeight());
         } else {
             int offset = bar.getHeight() / 28;
             boundsProvider =
@@ -81,7 +80,7 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
     protected void moveHandleToPosition(float scrollProgress) {
         float y = mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress);
         if (mBehavior == SIMPLE) {
-            mProgressIndicator.setY(y);
+            mThumb.setY(y);
         } else {
             View handle = (View) mBouncyHandle;
             handle.setY(y - handle.getHeight() / 2);

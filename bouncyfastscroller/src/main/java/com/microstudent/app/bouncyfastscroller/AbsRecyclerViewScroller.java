@@ -2,6 +2,7 @@ package com.microstudent.app.bouncyfastscroller;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -32,13 +33,18 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     private static final CharSequence DEFAULT_ALPHABET = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+    private static final int DEFAULT_COLOR = Color.GREEN;
+
+    private static final float DEFAULT_ALPHA = 0.6f;
+
+
     protected int mBehavior;
 
-    protected IndexBar mBar;
+    protected IndexBar mIndexBar;
 
     protected BouncyHandle mBouncyHandle;
 
-    protected View mProgressIndicator;
+    protected View mThumb;
 
     protected RecyclerView mRecyclerView;
 
@@ -65,25 +71,42 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(layoutResource, this, true);
 
-        TypedArray array = context.obtainStyledAttributes(R.styleable.VerticalBouncyFastScroller);
+        initView();
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AbsRecyclerViewScroller);
         try {
-            mBehavior =  array.getInt(R.styleable.VerticalBouncyFastScroller_behavior, SIMPLE);
+            mBehavior =  array.getInt(R.styleable.AbsRecyclerViewScroller_behavior, SIMPLE);
+            int color = array.getColor(R.styleable.AbsRecyclerViewScroller_theme_color, DEFAULT_COLOR);
+            setThemeColor(color);
+            float alpha = array.getFloat(R.styleable.AbsRecyclerViewScroller_alpha2, DEFAULT_ALPHA);
+            setAlpha(alpha);
         }finally {
             array.recycle();
         }
-        initView();
 
         setupView();
     }
 
+    public void setThemeColor(int color) {
+        mBouncyHandle.setHintColor(color);
+        mThumb.setBackgroundColor(color);
+    }
+
+    @Override
+    public void setAlpha(float alpha) {
+        mThumb.setAlpha(alpha);
+        mBouncyHandle.setAlpha(alpha);
+        mIndexBar.setAlpha(alpha);
+    }
+
     private void setupView() {
-        if (mBar != null) {
+        if (mIndexBar != null) {
             Log.d(TAG, "setting listener");
-            mBar.setOnTouchListener(this);
+            mIndexBar.setOnTouchListener(this);
             if (mBehavior == SIMPLE) {
-                mBar.setVisitable(false);
+                mIndexBar.setVisitable(false);
             } else {
-                mBar.setVisitable(true);
+                mIndexBar.setVisitable(true);
             }
         }
     }
@@ -101,12 +124,16 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
     }
 
     protected void initView() {
-        mBar = (IndexBar) findViewById(R.id.scroll_bar);
+        mIndexBar = (IndexBar) findViewById(R.id.index_bar);
         mBouncyHandle = (BouncyHandle) findViewById(R.id.scroll_handle);
-        mProgressIndicator = findViewById(R.id.progress_indicator);
+        mThumb = findViewById(R.id.thumb);
     }
 
     protected abstract void showOrHideProgressIndicator(RecyclerView mRecyclerView);
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        setRecyclerView(recyclerView, mBehavior);
+    }
 
     @Override
     public void setRecyclerView(RecyclerView recyclerView, int type) {
@@ -168,10 +195,10 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
                         moveHandleToPosition(scrollProgress);
                     }
                     if (mBehavior == SIMPLE) {
-                        if (mProgressIndicator.getAlpha() != 1) {
-                            mProgressIndicator.setAlpha(1);
+                        if (mThumb.getAlpha() != 1) {
+                            mThumb.setAlpha(1);
                         } else {
-                            mProgressIndicator.animate().alpha(0).setStartDelay(DEFAULT_ALPHA_OUT_DELAY);
+                            mThumb.animate().alpha(0).setStartDelay(DEFAULT_ALPHA_OUT_DELAY);
                         }
                     }
                 }
@@ -202,7 +229,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
     }
 
     protected int getTouchingSection(float y) {
-        return mBar.getSectionIndex(y);
+        return mIndexBar.getSectionIndex(y);
     }
 
 
@@ -243,7 +270,16 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
     @Override
     public void scrollTo(float scrollProgress, boolean fromTouch) {
         int position = getPositionFromScrollProgress(scrollProgress);
-        mRecyclerView.scrollToPosition(position);
+        if (!(mRecyclerView.getLayoutManager() instanceof LinearLayoutManager)) {
+            Log.e(TAG, "recyclerView's layout manager isn't a LinearLayoutManager, not Supported!");
+            return;
+        }
+
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        linearLayoutManager.scrollToPositionWithOffset(position, 0);
+
+//            the method below doesn't scroll item to the top! so delete it, and using linearLayoutManager.scrollToPositionWithOffset
+//            mRecyclerView.scrollToPosition(position);
         if (fromTouch) {
             updateSectionIndicatorByPosition(position);
         }
@@ -274,9 +310,9 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
                 return;
             case MotionEvent.ACTION_UP:
                 mBouncyHandle.hideHandle();
-                if (mBehavior == SHOW_INDEX_IN_NEED) {
-                    mBar.hideIndexBar();
-                }
+//                if (mBehavior == SHOW_INDEX_IN_NEED) {
+//                    mIndexBar.hideIndexBar();
+//                }
         }
     }
 }

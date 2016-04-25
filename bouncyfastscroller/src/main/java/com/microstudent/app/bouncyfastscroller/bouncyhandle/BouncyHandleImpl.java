@@ -111,8 +111,6 @@ public class BouncyHandleImpl extends View implements BouncyHandle, Callback {
     @Override
     public void showHandle() {
         if (mIndicatorHelper != null) {
-            setHintWord("你他妈给我运行起来");
-
             if (mIsIndicatorVisible) {
                 mIndicatorHelper.startAnimation();
                 mBouncyHelper.startAnimation();
