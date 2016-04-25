@@ -2,6 +2,7 @@ package com.microstudent.app.bouncyfastscroller;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.microstudent.app.bouncyfastscroller.indexer.IndexCursor;
 import java.util.ArrayList;
 
 /**
+ *
  * Created by MicroStudent on 2016/4/19.
  */
 public abstract class AbsRecyclerViewScroller extends FrameLayout implements RecyclerViewScroller, View.OnTouchListener {
@@ -69,7 +71,6 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         }finally {
             array.recycle();
         }
-
         initView();
 
         setupView();
@@ -104,7 +105,6 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         mBouncyHandle = (BouncyHandle) findViewById(R.id.scroll_handle);
         mProgressIndicator = findViewById(R.id.progress_indicator);
     }
-
 
     protected abstract void showOrHideProgressIndicator(RecyclerView mRecyclerView);
 
@@ -144,10 +144,12 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         if (getScrollProgressCalculator() == null) {
             onCreateScrollProgressCalculator();
         }
-        if (!mIsTouching) {
+        //it is meaningless to sync the handle when in SIMPLE mode. And doesn't have to sync when touching.
+        if (!mIsTouching && mBehavior == SIMPLE) {
             // synchronize the handle position to the RecyclerView
             float scrollProgress = getScrollProgressCalculator().calculateScrollProgress(mRecyclerView);
             moveHandleToPosition(scrollProgress);
+            Log.d(TAG, "onLayout!");
         }
     }
 
@@ -159,7 +161,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
             mOnScrollListener = new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    float scrollProgress = 0;
+                    float scrollProgress;
                     ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
                     if (scrollProgressCalculator != null && !mIsTouching) {
                         scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
@@ -189,7 +191,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
         if (mBehavior == ALWAYS_SHOW_INDEX) {
             showOrHideIndicator(event);
-            int section = getTouchingSection(scrollProgress);
+            int section = getTouchingSection(event.getY());
             scrollTo(section, true);
         } else {
             scrollTo(scrollProgress, true);
@@ -199,19 +201,29 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         return true;
     }
 
-    protected int getTouchingSection(float scrollProgress){
-        if (scrollProgress <= 1 && scrollProgress >= 0) {
-            int length = DEFAULT_ALPHABET.length() - 1;
-            return (int) (length * scrollProgress);
-        }
-        return 0;
+    protected int getTouchingSection(float y) {
+        return mBar.getSectionIndex(y);
     }
 
 
     private void scrollTo(int section, boolean fromTouch) {
         int position = getPositionFromSection(section);
         if (position != -1) {
-            mRecyclerView.scrollToPosition(position);
+            Log.d(TAG, "scroll to " + String.valueOf(section));
+            Log.d(TAG, "position =  " + String.valueOf(position));
+
+
+            if (!(mRecyclerView.getLayoutManager() instanceof LinearLayoutManager)) {
+                Log.e(TAG, "recyclerView's layout manager isn't a LinearLayoutManager, not Supported!");
+                return;
+            }
+
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            linearLayoutManager.scrollToPositionWithOffset(position, 0);
+
+//            the method below doesn't scroll item to the top! so delete it, and using linearLayoutManager.scrollToPositionWithOffset
+//            mRecyclerView.scrollToPosition(position);
+
             if (fromTouch) {
                 updateSectionIndicatorBySection(section);
             }

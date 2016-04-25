@@ -16,4 +16,6 @@ public interface IndexBar {
     void setVisitable(boolean visitable);
 
     void setOnTouchListener(View.OnTouchListener listener);
+
+    int getSectionIndex(float y);
 }

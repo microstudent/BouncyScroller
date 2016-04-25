@@ -80,7 +80,6 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
     @Override
     protected void moveHandleToPosition(float scrollProgress) {
         float y = mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress);
-        View bar = (View) mBar;
         if (mBehavior == SIMPLE) {
             mProgressIndicator.setY(y);
         } else {
@@ -88,7 +87,6 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
             handle.setY(y - handle.getHeight() / 2);
         }
     }
-
 
     @Override
     protected int getLayoutResourceId() {

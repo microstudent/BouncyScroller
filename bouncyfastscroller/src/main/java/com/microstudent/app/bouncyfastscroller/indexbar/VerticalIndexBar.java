@@ -5,22 +5,14 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.text.Layout;
-import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import com.microstudent.app.bouncyfastscroller.R;
 import com.microstudent.app.bouncyfastscroller.utils.DensityUtil;
-
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Created by MicroStudent on 2016/4/19.
@@ -42,6 +34,8 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
     private char[] mIndexSet = DEFAULT_INDEX_SET;
 
     private TextPaint mTextPaint;
+
+    private int mMinTouchingY, mMaxTouchingY, mDividesOffset;
 
     public VerticalIndexBar(Context context) {
         this(context, null);
@@ -93,6 +87,10 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(Math.min(DEFAULT_WIDTH, widthSize), heightSize);
+
+        int divides = (DEFAULT_INDEX_SET.length + 1) * 2;
+        mMinTouchingY = mDividesOffset = getHeight() / divides;
+        mMaxTouchingY = getHeight() - mDividesOffset;
     }
 
     @Override
@@ -102,6 +100,11 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
         float offsetY = mTextPaint.getFontMetrics().descent;
         for (int i = 0; i < mIndexSet.length; i++) {
             canvas.drawText(mIndexSet, i, 1, canvas.getWidth() / 2, (i + 1) * offsetX + offsetY, mTextPaint);
+//            for debug only
+//            canvas.drawLine(0, i * 2 * mDividesOffset+mDividesOffset, getWidth(), i * 2 * mDividesOffset+mDividesOffset, mTextPaint);
+//            canvas.drawLine(0, mMinTouchingY, getWidth(), mMinTouchingY, mTextPaint);
+//            canvas.drawLine(0, mMaxTouchingY, getWidth(), mMaxTouchingY, mTextPaint);
+//            canvas.drawLine(0, 0, getWidth(), 0, mTextPaint);
         }
     }
 
@@ -127,6 +130,22 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
             mTextPaint.setAlpha(0);
         }
         invalidate();
+    }
+
+    @Override
+    public int getSectionIndex(float y) {
+        Log.d(TAG, "receive Y = " + String.valueOf(y) + "mMin = " + String.valueOf(mMinTouchingY) + "Offset = " + String.valueOf(mDividesOffset));
+        if (y < mMinTouchingY) {
+            return 0;
+        } else if (y > mMaxTouchingY) {
+            return DEFAULT_INDEX_SET.length - 1;
+        }
+        int result = (int) ((y - mDividesOffset) / (2 * mDividesOffset));
+        if (result >= DEFAULT_INDEX_SET.length) {
+            return DEFAULT_INDEX_SET.length - 1;
+        } else {
+            return result;
+        }
     }
 
 }
