@@ -6,8 +6,9 @@
     <declare-styleable name="AbsRecyclerViewScroller">
         <attr name="behavior" format="enum">
             <enum name="simple" value="0" />
-            <enum name="show_index_in_need" value="1" />
-            <enum name="always_show_index"  value="2"/>
+            <enum name="simple_with_indicator" value="1" />
+            <enum name="show_index_in_need" value="2" />
+            <enum name="always_show_index"  value="3"/>
         </attr>
         <attr name="theme_color" format="color" />
         <attr name="alpha2" format="float" />

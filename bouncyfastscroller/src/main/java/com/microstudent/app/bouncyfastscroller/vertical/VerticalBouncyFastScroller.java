@@ -48,12 +48,12 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
         VerticalScrollBoundsProvider boundsProvider;
         if (mBehavior == SIMPLE) {
             boundsProvider =
-                    new VerticalScrollBoundsProvider(bar.getY(), bar.getY() + bar.getHeight() - mThumb.getHeight());
+                    new VerticalScrollBoundsProvider(getPaddingTop(), getPaddingTop() + bar.getHeight() - mThumb.getHeight() - getPaddingBottom());
             Log.d(TAG, "thumb's height is " + String.valueOf(mThumb.getHeight()));
         } else {
             int offset = bar.getHeight() / 28;
             boundsProvider =
-                    new VerticalScrollBoundsProvider(bar.getY() + offset, bar.getY() + bar.getHeight() - offset);
+                    new VerticalScrollBoundsProvider(getPaddingTop() + offset, getPaddingTop() + bar.getHeight() - offset - getPaddingBottom());
         }
 
         mScrollProgressCalculator = new VerticalScrollProgressCalculator(boundsProvider);

@@ -9,13 +9,14 @@ import android.support.v7.widget.RecyclerView;
 public interface RecyclerViewScroller {
     /**
      * the behavior for indicator.
-     * SIMPLE means that only show a scrollbar,
+     * SIMPLE means that only show a thumb,
      * and show the indicator when user touch the bar.
      * ALWAYS_SHOW_INDEX means that there will always be a indexBar shown.
      */
     int SIMPLE = 0;
-    int SHOW_INDEX_IN_NEED = 1;
-    int ALWAYS_SHOW_INDEX = 2;
+    int SIMPLE_WITH_INDICATOR = 1;
+    int SHOW_INDEX_IN_NEED = 2;
+    int ALWAYS_SHOW_INDEX = 3;
 
     /**
      * @param recyclerView the recyclerView that need a scroller.
@@ -28,7 +29,7 @@ public interface RecyclerViewScroller {
      * @param scrollProgress the progress of the scroll expressed as a fraction from [0, 1]
      * @param fromTouch true if this scroll request was triggered by a touch
      */
-    void scrollTo(float scrollProgress, boolean fromTouch);
+    void scrollRecyclerViewTo(float scrollProgress, boolean fromTouch);
 
     /**
      * Since {@link RecyclerView.OnScrollListener} is not implemented as an interface, RecyclerViewScrollers cannot implement this

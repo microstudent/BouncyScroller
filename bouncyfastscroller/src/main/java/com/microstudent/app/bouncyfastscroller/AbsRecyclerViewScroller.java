@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
 import android.widget.FrameLayout;
 import android.widget.SectionIndexer;
@@ -19,6 +18,7 @@ import com.microstudent.app.bouncyfastscroller.bouncyhandle.BouncyHandle;
 import com.microstudent.app.bouncyfastscroller.calculation.ScrollProgressCalculator;
 import com.microstudent.app.bouncyfastscroller.indexbar.IndexBar;
 import com.microstudent.app.bouncyfastscroller.indexer.IndexCursor;
+import com.microstudent.app.bouncyfastscroller.thumb.Thumb;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     private static final String TAG = "AbsRecyclerViewScroller";
 
-    private static final long DEFAULT_ALPHA_OUT_DELAY = 1000;
+    private static final long DEFAULT_ANIMATION_DELAY = 1000;
 
     private static final CharSequence DEFAULT_ALPHABET = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -45,7 +45,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     protected BouncyHandle mBouncyHandle;
 
-    protected View mThumb;
+    protected Thumb mThumb;
 
     protected RecyclerView mRecyclerView;
 
@@ -91,7 +91,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     public void setThemeColor(int color) {
         mBouncyHandle.setHintColor(color);
-        mThumb.setBackgroundColor(color);
+        mThumb.setColor(color);
     }
 
     @Override
@@ -104,18 +104,26 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     private void setupView() {
         if (mIndexBar != null) {
-            Log.d(TAG, "setting listener");
-            mIndexBar.setOnTouchListener(this);
+            setListener();
             if (mBehavior == SIMPLE) {
                 mIndexBar.setVisitable(false);
-                mThumb.setVisibility(VISIBLE);
+                mThumb.setVisible(true);
             } else {
                 mIndexBar.setVisitable(true);
-                mThumb.setVisibility(INVISIBLE);
+                mThumb.setVisible(false);
             }
             if (mRecyclerView != null) {
                 mRecyclerView.addOnScrollListener(getOnScrollListener());
             }
+        }
+    }
+
+    private void setListener() {
+        Log.d(TAG, "setting listener");
+        if (mBehavior == SHOW_INDEX_IN_NEED || mBehavior == ALWAYS_SHOW_INDEX) {
+            mIndexBar.setOnTouchListener(this);
+        } else{
+            mThumb.setOnTouchListener(this);
         }
     }
 
@@ -134,7 +142,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
     protected void initView() {
         mIndexBar = (IndexBar) findViewById(R.id.index_bar);
         mBouncyHandle = (BouncyHandle) findViewById(R.id.scroll_handle);
-        mThumb = findViewById(R.id.thumb);
+        mThumb = (Thumb) findViewById(R.id.thumb);
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {
@@ -207,13 +215,13 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                         //The RecyclerView is not currently scrolling.
                         if (mBehavior == SIMPLE) {
-//                            mThumb.animate().alpha(0).setStartDelay(DEFAULT_ALPHA_OUT_DELAY);
+                            mThumb.hide(DEFAULT_ANIMATION_DELAY);
                         } else if (mBehavior == SHOW_INDEX_IN_NEED) {
-                            mIndexBar.hideIndexBar(DEFAULT_ALPHA_OUT_DELAY);
+                            mIndexBar.hideIndexBar(DEFAULT_ANIMATION_DELAY);
                         }
                     } else {
                         if (mBehavior == SIMPLE) {
-//                            mThumb.setAlpha(mAlpha);
+                            mThumb.show(0);
                         } else if (mBehavior == SHOW_INDEX_IN_NEED) {
                             mIndexBar.showIndexBar();
                         }
@@ -243,10 +251,9 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
             int section = getTouchingSection(event.getY());
             scrollTo(section, true);
         } else {
-            scrollTo(scrollProgress, true);
+            scrollRecyclerViewTo(scrollProgress, true);
         }
         moveHandleToPosition(scrollProgress);
-
         return true;
     }
 
@@ -290,7 +297,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
 
     @Override
-    public void scrollTo(float scrollProgress, boolean fromTouch) {
+    public void scrollRecyclerViewTo(float scrollProgress, boolean fromTouch) {
         int position = getPositionFromScrollProgress(scrollProgress);
         if (!(mRecyclerView.getLayoutManager() instanceof LinearLayoutManager)) {
             Log.e(TAG, "recyclerView's layout manager isn't a LinearLayoutManager, not Supported!");

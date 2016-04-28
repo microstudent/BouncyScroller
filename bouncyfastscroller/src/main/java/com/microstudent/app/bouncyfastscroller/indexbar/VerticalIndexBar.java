@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -50,10 +51,8 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
 
         TypedArray array = context.obtainStyledAttributes(R.styleable.VerticalIndexBar);
 
-        Drawable bg;
-
         try {
-            bg = array.getDrawable(R.styleable.VerticalIndexBar_bg);
+            GradientDrawable bg = (GradientDrawable) array.getDrawable(R.styleable.VerticalIndexBar_bg);
             if (bg != null) {
                 setImageDrawable(bg);
             } else {

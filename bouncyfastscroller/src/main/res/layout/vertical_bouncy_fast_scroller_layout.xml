@@ -7,17 +7,16 @@
 
     <com.microstudent.app.bouncyfastscroller.indexbar.VerticalIndexBar
         android:id="@+id/index_bar"
-        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         />
 
-    <View
+    <com.microstudent.app.bouncyfastscroller.thumb.RoundThumb
         android:id="@+id/thumb"
         android:layout_gravity="center_vertical|end"
         android:layout_margin="10dp"
-        android:background="@android:color/holo_green_light"
+        android:background="@drawable/bg_thumb"
         android:layout_width="10dp"
         android:layout_height="50dp"
         />
