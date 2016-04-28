@@ -14,10 +14,11 @@
 
     <com.microstudent.app.bouncyfastscroller.vertical.VerticalBouncyFastScroller
         android:id="@+id/vbfs"
-        app:behavior="show_index_in_need"
+        app:behavior="simple"
         app:theme_color="@android:color/black"
-        app:alpha2="0.5"
+        app:alpha2="0.6"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 </RelativeLayout>

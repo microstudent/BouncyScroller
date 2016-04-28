@@ -28,6 +28,6 @@
         android:id="@+id/scroll_handle"
         android:layout_width="140dp"
         android:layout_height="200dp"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_vertical|end"
         />
 </FrameLayout>

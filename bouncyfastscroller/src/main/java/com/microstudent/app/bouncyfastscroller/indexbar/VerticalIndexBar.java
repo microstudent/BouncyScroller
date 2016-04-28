@@ -118,7 +118,7 @@ public class VerticalIndexBar extends ImageView implements IndexBar{
     @Override
     public void setVisitable(boolean visibility) {
         if (visibility) {
-            setAlpha(1f);
+            setImageAlpha(255);
             mTextPaint.setAlpha(255);
         } else {
             setImageAlpha(0);

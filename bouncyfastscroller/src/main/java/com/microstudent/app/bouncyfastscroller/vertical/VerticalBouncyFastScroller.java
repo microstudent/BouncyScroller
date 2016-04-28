@@ -3,6 +3,7 @@ package com.microstudent.app.bouncyfastscroller.vertical;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.microstudent.app.bouncyfastscroller.AbsRecyclerViewScroller;
@@ -18,7 +19,7 @@ import com.microstudent.app.bouncyfastscroller.calculation.VerticalScrollProgres
  */
 public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
 
-    private static final String TAG = "VerticalBouncyFastScroller";
+    private static final String TAG = "VBFastScroller";
 
     private VerticalScrollProgressCalculator mScrollProgressCalculator;
     private VerticalScreenPositionCalculator mScreenPositionCalculator;
@@ -47,7 +48,8 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
         VerticalScrollBoundsProvider boundsProvider;
         if (mBehavior == SIMPLE) {
             boundsProvider =
-                    new VerticalScrollBoundsProvider(bar.getY(), bar.getHeight() - mThumb.getHeight());
+                    new VerticalScrollBoundsProvider(bar.getY(), bar.getY() + bar.getHeight() - mThumb.getHeight());
+            Log.d(TAG, "thumb's height is " + String.valueOf(mThumb.getHeight()));
         } else {
             int offset = bar.getHeight() / 28;
             boundsProvider =
@@ -66,6 +68,7 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
     @Override
     protected void moveHandleToPosition(float scrollProgress) {
         float y = mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress);
+        Log.d(TAG, "scrollProgress = " + String.valueOf(scrollProgress));
         if (mBehavior == SIMPLE) {
             mThumb.setY(y);
         } else {

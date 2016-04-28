@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
 import android.widget.FrameLayout;
 import android.widget.SectionIndexer;
@@ -206,13 +207,13 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                         //The RecyclerView is not currently scrolling.
                         if (mBehavior == SIMPLE) {
-                            mThumb.animate().alpha(0).setStartDelay(DEFAULT_ALPHA_OUT_DELAY);
+//                            mThumb.animate().alpha(0).setStartDelay(DEFAULT_ALPHA_OUT_DELAY);
                         } else if (mBehavior == SHOW_INDEX_IN_NEED) {
                             mIndexBar.hideIndexBar(DEFAULT_ALPHA_OUT_DELAY);
                         }
                     } else {
                         if (mBehavior == SIMPLE) {
-                            mThumb.setAlpha(mAlpha);
+//                            mThumb.setAlpha(mAlpha);
                         } else if (mBehavior == SHOW_INDEX_IN_NEED) {
                             mIndexBar.showIndexBar();
                         }

@@ -28,26 +28,10 @@ public class VerticalScrollProgressCalculator implements ScrollProgressCalculato
             return 0;
         }
 
-        return (float)recyclerView.computeVerticalScrollOffset() / recyclerView.computeVerticalScrollRange();
-
-//        int lastFullyVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
-//
-//        View visibleChild = recyclerView.getChildAt(0);
-//        if (visibleChild == null) {
-//            return 0;
-//        }
-//        RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(visibleChild);
-//        int itemHeight = holder.itemView.getHeight();
-//        int recyclerHeight = recyclerView.getHeight();
-//        int itemsInWindow = recyclerHeight / itemHeight;
-//
-//        int numItemsInList = recyclerView.getAdapter().getItemCount();
-//        int numScrollableSectionsInList = numItemsInList - itemsInWindow;
-//        int indexOfLastFullyVisibleItemInFirstSection = numItemsInList - numScrollableSectionsInList - 1;
-//
-//        int currentSection = lastFullyVisiblePosition - indexOfLastFullyVisibleItemInFirstSection;
-//
-//        return (float) currentSection / numScrollableSectionsInList;
+        float offset = recyclerView.computeVerticalScrollOffset();
+        int range = recyclerView.computeVerticalScrollRange();
+        int extent = recyclerView.computeVerticalScrollExtent();
+        return offset / (range - extent);
     }
 
     @Override
