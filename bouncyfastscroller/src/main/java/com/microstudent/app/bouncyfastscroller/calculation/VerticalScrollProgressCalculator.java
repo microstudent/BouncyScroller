@@ -35,15 +35,19 @@ public class VerticalScrollProgressCalculator implements ScrollProgressCalculato
     }
 
     @Override
-    public float calculateScrollProgress(MotionEvent event) {
+    public float calculateScrollProgress(View v,MotionEvent event) {
         float y = event.getY();
 
-        if (y <= mScrollBoundsProvider.getMinimumScrollY()) {
+//        Log.d(TAG, "event's y = " + String.valueOf(event.getY()));
+//        Log.d(TAG, "v's y = " + String.valueOf(v.getY()));
+//        Log.d(TAG, "min = " + String.valueOf(mScrollBoundsProvider.getMinimumScrollY()));
+//        Log.d(TAG, "Y = " + String.valueOf(y));
+        if (y <= 0) {
             return 0;
-        } else if (y >= mScrollBoundsProvider.getMaximumScrollY()) {
+        } else if (y >= mScrollBoundsProvider.getLength()) {
             return 1;
         } else {
-            return y / mScrollBoundsProvider.getMaximumScrollY();
+            return y / mScrollBoundsProvider.getLength();
         }
     }
 }

@@ -24,5 +24,9 @@ TODO List：
 
 5. IndexBar的ALPHA IN/OUT动画有BUG，导致在模式切换时无法正确显示
 
+6. 切换behavior时bound不会随之更改
+
+7. 拼音首字母检测导致卡顿
+
   [1]: https://github.com/danoz73/RecyclerViewFastScroller
   [2]: https://github.com/microstudent/microstudent.github.io/raw/master/b.gif

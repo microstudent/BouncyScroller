@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  *
  * Created by MicroStudent on 2016/4/21.
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements SectionIndexer {
     private LayoutInflater mInflater;
 
     private ArrayList<String> mData;
@@ -56,6 +57,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    @Override
+    public Object[] getSections() {
+        return mData.toArray();
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return sectionIndex;
+    }
+
+    @Override
+    public int getSectionForPosition(int position) {
+        return position;
     }
 
 

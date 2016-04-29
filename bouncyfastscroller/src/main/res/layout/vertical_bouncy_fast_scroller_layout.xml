@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     >
 
     <com.microstudent.app.bouncyfastscroller.indexbar.VerticalIndexBar
@@ -10,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/space_normal"
         />
 
     <com.microstudent.app.bouncyfastscroller.thumb.RoundThumb

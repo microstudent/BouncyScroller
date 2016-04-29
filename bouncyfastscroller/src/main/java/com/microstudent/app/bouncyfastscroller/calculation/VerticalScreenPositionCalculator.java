@@ -19,5 +19,6 @@ public class VerticalScreenPositionCalculator {
                         mVerticalScrollBoundsProvider.getMaximumScrollY()
                 )
         );
+
     }
 }

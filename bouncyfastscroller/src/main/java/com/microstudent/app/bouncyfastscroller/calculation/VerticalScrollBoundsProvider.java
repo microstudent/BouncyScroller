@@ -19,4 +19,8 @@ public class VerticalScrollBoundsProvider {
     public float getMaximumScrollY() {
         return mMaximumScrollY;
     }
+
+    public float getLength() {
+        return mMaximumScrollY - mMinimumScrollY;
+    }
 }

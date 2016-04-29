@@ -51,9 +51,8 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
                     new VerticalScrollBoundsProvider(getPaddingTop(), getPaddingTop() + bar.getHeight() - mThumb.getHeight() - getPaddingBottom());
             Log.d(TAG, "thumb's height is " + String.valueOf(mThumb.getHeight()));
         } else {
-            int offset = bar.getHeight() / 28;
             boundsProvider =
-                    new VerticalScrollBoundsProvider(getPaddingTop() + offset, getPaddingTop() + bar.getHeight() - offset - getPaddingBottom());
+                    new VerticalScrollBoundsProvider(getPaddingTop(), getHeight() - getPaddingBottom());
         }
 
         mScrollProgressCalculator = new VerticalScrollProgressCalculator(boundsProvider);
@@ -71,6 +70,10 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
         Log.d(TAG, "scrollProgress = " + String.valueOf(scrollProgress));
         if (mBehavior == SIMPLE) {
             mThumb.setY(y);
+        } else if (mBehavior == SIMPLE_WITH_INDICATOR) {
+            mThumb.setY(y);
+            View handle = (View) mBouncyHandle;
+            handle.setY(y - handle.getHeight() / 2);
         } else {
             View handle = (View) mBouncyHandle;
             handle.setY(y - handle.getHeight() / 2);

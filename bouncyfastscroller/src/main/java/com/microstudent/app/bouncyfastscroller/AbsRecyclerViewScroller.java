@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AlphabetIndexer;
 import android.widget.FrameLayout;
 import android.widget.SectionIndexer;
@@ -74,6 +75,9 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(layoutResource, this, true);
 
+        //never padding left and right!
+        measurePadding();
+
         initView();
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AbsRecyclerViewScroller);
@@ -87,6 +91,12 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         }
 
         setupView();
+    }
+
+    private void measurePadding() {
+        if (getPaddingLeft() != 0 || getPaddingRight() != 0) {
+            setPadding(0, getPaddingTop(), 0, getPaddingBottom());
+        }
     }
 
     public void setThemeColor(int color) {
@@ -104,8 +114,10 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     private void setupView() {
         if (mIndexBar != null) {
-            setListener();
-            if (mBehavior == SIMPLE) {
+//            setListener();
+            mIndexBar.setOnTouchListener(this);
+
+            if (mBehavior == SIMPLE || mBehavior == SIMPLE_WITH_INDICATOR) {
                 mIndexBar.setVisitable(false);
                 mThumb.setVisible(true);
             } else {
@@ -184,6 +196,14 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         if (getScrollProgressCalculator() == null) {
             onCreateScrollProgressCalculator();
         }
+
+        setClipChildren(false);
+        setClipToPadding(false);
+        ViewGroup parent = (ViewGroup) getParent();
+        if (parent != null) {
+            parent.setClipChildren(false);
+            parent.setClipToPadding(false);
+        }
         //it is meaningless to sync the handle when in SIMPLE mode. And doesn't have to sync when touching.
         if (!mIsTouching && mBehavior == SIMPLE) {
             // synchronize the handle position to the RecyclerView
@@ -241,16 +261,19 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
         mIsTouching = event.getActionMasked() != MotionEvent.ACTION_UP;
 
-        float scrollProgress = getScrollProgress(event);
+        float scrollProgress = getScrollProgress(v, event);
 
         if (mBehavior == ALWAYS_SHOW_INDEX || mBehavior == SHOW_INDEX_IN_NEED) {
+            //INDEX
             showOrHideIndicator(event);
             if (mIsTouching) {
                 mIndexBar.setVisitable(true);
             }
             int section = getTouchingSection(event.getY());
-            scrollTo(section, true);
+            scrollRecyclerViewTo(section, true);
         } else {
+            //SIMPLE
+            showOrHideIndicator(event);
             scrollRecyclerViewTo(scrollProgress, true);
         }
         moveHandleToPosition(scrollProgress);
@@ -262,7 +285,7 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
     }
 
 
-    private void scrollTo(int section, boolean fromTouch) {
+    private void scrollRecyclerViewTo(int section, boolean fromTouch) {
         int position = getPositionFromSection(section);
         if (position != -1) {
             Log.d(TAG, "scroll to " + String.valueOf(section));
@@ -316,10 +339,10 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
 
     protected abstract void moveHandleToPosition(float scrollProgress);
 
-    protected float getScrollProgress(MotionEvent event){
+    protected float getScrollProgress(View view,MotionEvent event){
         ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
         if (scrollProgressCalculator != null) {
-            return getScrollProgressCalculator().calculateScrollProgress(event);
+            return getScrollProgressCalculator().calculateScrollProgress(view, event);
         }
         return 0;
     }
@@ -330,15 +353,20 @@ public abstract class AbsRecyclerViewScroller extends FrameLayout implements Rec
         if (mBouncyHandle == null || mBehavior == SIMPLE) {
             return;
         }
-
         Log.d(TAG, "ON touch and the y is :" + String.valueOf(event.getY()));
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mBouncyHandle.showHandle();
+                if (mBehavior == SIMPLE_WITH_INDICATOR) {
+                    mThumb.hide(0);
+                }
                 return;
             case MotionEvent.ACTION_UP:
                 mBouncyHandle.hideHandle();
+                if (mBehavior == SIMPLE_WITH_INDICATOR) {
+                    mThumb.show(0);
+                }
         }
     }
 }

@@ -15,7 +15,7 @@
     <com.microstudent.app.bouncyfastscroller.vertical.VerticalBouncyFastScroller
         android:id="@+id/vbfs"
         android:padding="10dp"
-        app:behavior="simple"
+        app:behavior="simple_with_indicator"
         app:theme_color="@android:color/black"
         app:alpha2="0.6"
         android:layout_alignParentEnd="true"
