@@ -16,7 +16,7 @@ TODO List：
 
 1. SIMPLE 模式下拉到最底下会有一定的间隙，范围计算错误；(fixed)
 
-2. 添加带INDICATOR的SIMPLE模式；
+2. 添加带INDICATOR的SIMPLE模式；(fixed)
 
 3. SIMPLE考虑添加一个范围示意View；
 
