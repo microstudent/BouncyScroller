@@ -3,14 +3,15 @@ package com.microstudent.app.bouncyfastscroller;
 import android.support.v7.widget.RecyclerView;
 
 /**
- *
+ * a scroller for recyclerView, has more than one behavior.
  * Created by MicroStudent on 2016/4/19.
  */
 public interface RecyclerViewScroller {
     /**
      * the behavior for indicator.
-     * SIMPLE means that only show a thumb,
-     * and show the indicator when user touch the bar.
+     * SIMPLE means that only show a thumb.
+     * SIMPLE_WITH_INDICATOR show the indicator when user touch the thumb.
+     * SHOW_INDEX_IN_NEED means that the indexBar would be hided automatically.
      * ALWAYS_SHOW_INDEX means that there will always be a indexBar shown.
      */
     int SIMPLE = 0;
@@ -19,10 +20,11 @@ public interface RecyclerViewScroller {
     int ALWAYS_SHOW_INDEX = 3;
 
     /**
+     * connect receiverView to scroller.
      * @param recyclerView the recyclerView that need a scroller.
-     * @param type the behavior for the scroller.
+     * @param behavior the behavior for the scroller.
      */
-    void setRecyclerView(RecyclerView recyclerView, int type);
+    void setRecyclerView(RecyclerView recyclerView, int behavior);
 
     /**
      * Indicate to the scroller that it should scroll to a certain amount of scroll progress

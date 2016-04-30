@@ -34,6 +34,15 @@ public class VerticalBouncyFastScroller extends AbsRecyclerViewScroller {
 
     public VerticalBouncyFastScroller(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        //never padding left and right!
+        measurePadding();
+    }
+
+    private void measurePadding() {
+        if (getPaddingLeft() != 0 || getPaddingRight() != 0) {
+            setPadding(0, getPaddingTop(), 0, getPaddingBottom());
+        }
     }
 
     @Override

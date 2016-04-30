@@ -20,4 +20,6 @@ public interface IndexBar {
     void setAlpha(float alpha);
 
     void hideIndexBar(long defaultAlphaOutDelay);
+
+    CharSequence getKeyword();
 }

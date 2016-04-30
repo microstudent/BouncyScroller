@@ -29,7 +29,7 @@ public class FastScrollerTouchListener implements View.OnTouchListener {
 //        float scrollProgress = getScrollProgress(event);
 //
 //        if (mBehavior == ALWAYS_SHOW_INDEX || mBehavior == SHOW_INDEX_IN_NEED) {
-//            showOrHideIndicator(event);
+//            showOrHideHandle(event);
 //            if (mIsTouching) {
 //                mIndexBar.setVisitable(true);
 //            }
