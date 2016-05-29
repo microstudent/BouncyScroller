@@ -29,4 +29,4 @@ TODO List：
 7. 拼音首字母检测导致卡顿
 
   [1]: https://github.com/danoz73/RecyclerViewFastScroller
-  [2]: https://github.com/microstudent/microstudent.github.io/raw/master/b.gif
+  [2]: https://github.com/microstudent/microstudent.github.io1/raw/master/b.gif
